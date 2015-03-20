@@ -14,7 +14,20 @@ public class Game2048 extends Plugin{
 	
 	private static int[][] table = new int[4][4];
 	private Random rand = new Random();
-	private Color background = new Color(227, 159, 91);
+	private Color background = new Color(187, 173, 160);
+	private Color[] tile = new Color[]{new Color(205, 193, 181),
+			new Color(236, 226, 216),
+			new Color(237, 222, 199),
+			new Color(238, 175, 122),
+			new Color(245, 149, 99),
+			new Color(246, 123, 92),
+			new Color(233, 89, 55),
+			new Color(241, 218, 106),
+			new Color(237, 204, 99),
+			new Color(236, 200, 80),
+			new Color(235, 195, 61),
+			new Color(234, 192, 44),
+			new Color(58, 60, 49)};
 
 	@Override
 	public void onEnable() {
@@ -23,11 +36,25 @@ public class Game2048 extends Plugin{
 				table[i][j] = 0;
 			}
 		}
-		table[rand.nextInt(4)][rand.nextInt(4)] = 1;
+		createCase();
 	}
 
 	@Override
-	public void onInput(ArchInput input, byte status) {}
+	public void onInput(ArchInput input, byte status) {
+		if(status == 0)
+			return;
+		if(input != ArchInput.BUTTON_UP &&
+				input != ArchInput.BUTTON_DOWN &&
+				input != ArchInput.BUTTON_LEFT &&
+				input != ArchInput.BUTTON_RIGHT) {
+			return;
+		}
+
+		move(input);
+		createCase();
+		
+		ArchGraphics.push();
+	}
 
 	@Override
 	public void onAxis(ArchAxis axis, double location) {}
@@ -43,11 +70,123 @@ public class Game2048 extends Plugin{
 			int height = graphics.getHeight()/5;
 			for(int i = 0; i < 4; i++) {
 				for(int j = 0; j < 4; j++) {
-					g2d.setColor(new Color(255-table[i][j]*50, 255, 255-table[i][j]*50));
-					g2d.fillRect(i*width+width/2, j*height+height/2, width, height);
+					g2d.setColor(tile[table[i][j]]);
+					g2d.fillRoundRect(i*width+(i+1)*width/5, j*height+(j+1)*height/5, width, height, 20, 20);
 				}
 			}
 		}
+	}
+	
+	public void createCase() {
+		boolean place = false;
+		for(int i = 0; i < 4; i++) {
+			for(int j = 0; j < 4; j++) {
+				if(table[i][j] == 0) {
+					place = true;
+				}
+			}
+		}
+		
+		if(!place)
+			return;
+		
+		boolean made = false;
+		while(!made) {
+			int i = rand.nextInt(4);
+			int j = rand.nextInt(4);
+			if(table[i][j] == 0) {
+				table[i][j] = 1;
+				made = true;
+			}
+		}
+	}
+	
+	private void move(ArchInput input) {
+		if(input == ArchInput.BUTTON_UP) {
+			moveUp();
+		} else if(input == ArchInput.BUTTON_DOWN) {
+			reverse(true);
+			moveUp();
+			reverse(true);
+		} else if(input == ArchInput.BUTTON_LEFT) {
+			moveLeft();
+		} else if(input == ArchInput.BUTTON_RIGHT) {
+			reverse(false);
+			moveLeft();
+			reverse(false);
+		}
+	}
+	
+	private void moveUp() {
+		for(int i = 0; i < 4; i++) {
+			for(int j = 3; j > 0; j--) {
+				boolean up = false;
+				int u = 0;
+				while(!up) {
+					u++;
+					int k = j-u;
+					int l = j-(u-1);
+					if(k < 0) {
+						up = true;
+					} else {
+						if(table[i][k] == 0) {
+							table[i][k] = table[i][l];
+							table[i][l] = 0;
+						} else if(table[i][k] == table[i][l]) {
+							table[i][k]++;
+							table[i][l] = 0;
+						} else {
+							up = true;
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	private void moveLeft() {
+		for(int i = 3; i > 0; i--) {
+			for(int j = 0; j < 4; j++) {
+				boolean left = false;
+				int u = 0;
+				while(!left) {
+					u++;
+					int k = i-u;
+					int l = i-(u-1);
+					if(k < 0) {
+						left = true;
+					} else {
+						if(table[k][j] == 0) {
+							table[k][j] = table[l][j];
+							table[l][j] = 0;
+						} else if(table[k][j] == table[l][j]) {
+							table[k][j]++;
+							table[l][j] = 0;
+						} else {
+							left = true;
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	private void reverse(boolean vertical) {
+		int[][] reverse = new int[4][4];
+		if(vertical) {
+			for(int i = 0; i < 4; i++) {
+				for(int j = 0; j < 4; j++) {
+					reverse[i][j] = table[i][3-j];
+				}
+			}
+		} else {
+			for(int i = 0; i < 4; i++) {
+				for(int j = 0; j < 4; j++) {
+					reverse[i][j] = table[3-i][j];
+				}
+			}
+		}
+		table = reverse;
 	}
 
 }

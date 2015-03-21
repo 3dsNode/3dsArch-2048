@@ -2,7 +2,10 @@ package fr.skyforce77.arch3ds.game2048;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.util.Random;
+
+import javax.swing.ImageIcon;
 
 import fr.skyforce77.arch3ds.api.Plugin;
 import fr.skyforce77.arch3ds.api.graphics.ArchGraphics;
@@ -74,6 +77,9 @@ public class Game2048 extends Plugin{
 					g2d.fillRoundRect(i*width+(i+1)*width/5, j*height+(j+1)*height/5, width, height, 20, 20);
 				}
 			}
+		} else if(graphics.getScreen().equals(ArchScreen.TOP_SCREEN)) {
+			Image im = new ImageIcon(Game2048.class.getResource("/resources/2048.png")).getImage();
+			g2d.drawImage(im, 0, 0, graphics.getWidth(), graphics.getHeight(), null);
 		}
 	}
 	

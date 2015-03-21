@@ -7,13 +7,13 @@ import java.util.Random;
 
 import javax.swing.ImageIcon;
 
-import fr.skyforce77.arch3ds.api.Plugin;
+import fr.skyforce77.arch3ds.api.ArchGame;
 import fr.skyforce77.arch3ds.api.graphics.ArchGraphics;
 import fr.skyforce77.arch3ds.api.graphics.ArchScreen;
 import fr.skyforce77.arch3ds.api.input.ArchAxis;
 import fr.skyforce77.arch3ds.api.input.ArchInput;
 
-public class Game2048 extends Plugin{
+public class Game2048 extends ArchGame{
 	
 	private static int[][] table = new int[4][4];
 	private Random rand = new Random();

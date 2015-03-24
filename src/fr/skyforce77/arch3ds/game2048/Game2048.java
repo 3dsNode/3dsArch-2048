@@ -8,17 +8,19 @@ import java.util.Random;
 import javax.swing.ImageIcon;
 
 import fr.skyforce77.arch3ds.api.ArchGame;
+import fr.skyforce77.arch3ds.api.GameManager;
 import fr.skyforce77.arch3ds.api.graphics.ArchGraphics;
 import fr.skyforce77.arch3ds.api.graphics.ArchScreen;
 import fr.skyforce77.arch3ds.api.input.ArchAxis;
 import fr.skyforce77.arch3ds.api.input.ArchInput;
 
 public class Game2048 extends ArchGame{
-	
+
 	private static int[][] table = new int[4][4];
 	private Random rand = new Random();
 	private Color background = new Color(187, 173, 160);
-	private Color[] tile = new Color[]{new Color(205, 193, 181),
+	private Color[] tile = new Color[]{
+			new Color(205, 193, 181),
 			new Color(236, 226, 216),
 			new Color(237, 222, 199),
 			new Color(238, 175, 122),
@@ -55,7 +57,7 @@ public class Game2048 extends ArchGame{
 
 		move(input);
 		createCase();
-		
+
 		ArchGraphics.push();
 	}
 
@@ -67,7 +69,7 @@ public class Game2048 extends ArchGame{
 		Graphics2D g2d = graphics.getGraphics();
 		g2d.setColor(background);
 		g2d.fillRect(0, 0, graphics.getWidth(), graphics.getHeight());
-		
+
 		if(graphics.getScreen().equals(ArchScreen.BOTTOM_SCREEN)) {
 			int width = graphics.getWidth()/5;
 			int height = graphics.getHeight()/5;
@@ -82,7 +84,7 @@ public class Game2048 extends ArchGame{
 			g2d.drawImage(im, 0, 0, graphics.getWidth(), graphics.getHeight(), null);
 		}
 	}
-	
+
 	public void createCase() {
 		boolean place = false;
 		for(int i = 0; i < 4; i++) {
@@ -92,10 +94,10 @@ public class Game2048 extends ArchGame{
 				}
 			}
 		}
-		
+
 		if(!place)
 			return;
-		
+
 		boolean made = false;
 		while(!made) {
 			int i = rand.nextInt(4);
@@ -106,7 +108,7 @@ public class Game2048 extends ArchGame{
 			}
 		}
 	}
-	
+
 	private void move(ArchInput input) {
 		if(input == ArchInput.BUTTON_UP) {
 			moveUp();
@@ -121,8 +123,12 @@ public class Game2048 extends ArchGame{
 			moveLeft();
 			reverse(false);
 		}
+		if(full()) {
+			GameManager.callGameMethod("displayPopup", "Game Over");
+			table = new int[4][4];
+		}
 	}
-	
+
 	private void moveUp() {
 		for(int i = 0; i < 4; i++) {
 			for(int j = 3; j > 0; j--) {
@@ -149,7 +155,7 @@ public class Game2048 extends ArchGame{
 			}
 		}
 	}
-	
+
 	private void moveLeft() {
 		for(int i = 3; i > 0; i--) {
 			for(int j = 0; j < 4; j++) {
@@ -176,7 +182,7 @@ public class Game2048 extends ArchGame{
 			}
 		}
 	}
-	
+
 	private void reverse(boolean vertical) {
 		int[][] reverse = new int[4][4];
 		if(vertical) {
@@ -193,6 +199,18 @@ public class Game2048 extends ArchGame{
 			}
 		}
 		table = reverse;
+	}
+
+	private boolean full() {
+		boolean full = true;
+		for(int i = 0; i < 4; i++) {
+			for(int j = 0; j < 4; j++) {
+				if(table[i][j] == 0) {
+					full = false;
+				}
+			}
+		}
+		return full;
 	}
 
 }

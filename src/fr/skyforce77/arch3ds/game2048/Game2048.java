@@ -11,7 +11,6 @@ import fr.skyforce77.arch3ds.api.ArchGame;
 import fr.skyforce77.arch3ds.api.GameManager;
 import fr.skyforce77.arch3ds.api.graphics.ArchGraphics;
 import fr.skyforce77.arch3ds.api.graphics.ArchScreen;
-import fr.skyforce77.arch3ds.api.input.ArchAxis;
 import fr.skyforce77.arch3ds.api.input.ArchInput;
 
 public class Game2048 extends ArchGame{
@@ -59,9 +58,6 @@ public class Game2048 extends ArchGame{
 			ArchGraphics.push();
 		}
 	}
-
-	@Override
-	public void onAxis(ArchAxis axis, double location) {}
 
 	@Override
 	public void drawScreen(ArchGraphics graphics) {

@@ -48,17 +48,16 @@ public class Game2048 extends ArchGame{
 	public void onInput(ArchInput input, byte status) {
 		if(status == 0)
 			return;
-		if(input != ArchInput.BUTTON_UP &&
-				input != ArchInput.BUTTON_DOWN &&
-				input != ArchInput.BUTTON_LEFT &&
-				input != ArchInput.BUTTON_RIGHT) {
-			return;
+		
+		if(input == ArchInput.BUTTON_UP || input == ArchInput.BUTTON_X
+				 || input == ArchInput.BUTTON_DOWN || input == ArchInput.BUTTON_B
+				 || input == ArchInput.BUTTON_LEFT || input == ArchInput.BUTTON_Y
+				 ||  input == ArchInput.BUTTON_RIGHT || input == ArchInput.BUTTON_A) {
+			move(input);
+			createCase();
+
+			ArchGraphics.push();
 		}
-
-		move(input);
-		createCase();
-
-		ArchGraphics.push();
 	}
 
 	@Override
@@ -110,15 +109,15 @@ public class Game2048 extends ArchGame{
 	}
 
 	private void move(ArchInput input) {
-		if(input == ArchInput.BUTTON_UP) {
+		if(input == ArchInput.BUTTON_UP || input == ArchInput.BUTTON_X) {
 			moveUp();
-		} else if(input == ArchInput.BUTTON_DOWN) {
+		} else if(input == ArchInput.BUTTON_DOWN || input == ArchInput.BUTTON_B) {
 			reverse(true);
 			moveUp();
 			reverse(true);
-		} else if(input == ArchInput.BUTTON_LEFT) {
+		} else if(input == ArchInput.BUTTON_LEFT || input == ArchInput.BUTTON_Y) {
 			moveLeft();
-		} else if(input == ArchInput.BUTTON_RIGHT) {
+		} else if(input == ArchInput.BUTTON_RIGHT || input == ArchInput.BUTTON_A) {
 			reverse(false);
 			moveLeft();
 			reverse(false);

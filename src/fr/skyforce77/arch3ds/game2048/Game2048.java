@@ -12,8 +12,10 @@ import fr.skyforce77.arch3ds.api.GameManager;
 import fr.skyforce77.arch3ds.api.graphics.ArchGraphics;
 import fr.skyforce77.arch3ds.api.graphics.ArchScreen;
 import fr.skyforce77.arch3ds.api.input.ArchInput;
+import fr.skyforce77.arch3ds.api.listener.GraphicsListener;
+import fr.skyforce77.arch3ds.api.listener.InputListener;
 
-public class Game2048 extends ArchGame{
+public class Game2048 extends ArchGame implements InputListener,GraphicsListener{
 
 	private static int[][] table = new int[4][4];
 	private Random rand = new Random();
@@ -33,6 +35,12 @@ public class Game2048 extends ArchGame{
 			new Color(234, 192, 44),
 			new Color(58, 60, 49)};
 
+	@Override
+	public void onInit() {
+		this.addInputListener(this);
+		this.addGraphicsListener(this);
+	}
+	
 	@Override
 	public void onEnable() {
 		for(int i = 0; i < 4; i++) {
@@ -55,12 +63,12 @@ public class Game2048 extends ArchGame{
 			move(input);
 			createCase();
 
-			ArchGraphics.push();
+			ArchGraphics.push(ArchScreen.BOTTOM_SCREEN);
 		}
 	}
 
 	@Override
-	public void drawScreen(ArchGraphics graphics) {
+	public void onScreenUpdated(ArchGraphics graphics) {
 		Graphics2D g2d = graphics.getGraphics();
 		g2d.setColor(background);
 		g2d.fillRect(0, 0, graphics.getWidth(), graphics.getHeight());

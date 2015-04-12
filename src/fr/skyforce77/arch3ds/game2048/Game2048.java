@@ -8,12 +8,12 @@ import java.util.Random;
 import javax.swing.ImageIcon;
 
 import fr.skyforce77.arch3ds.api.ArchGame;
-import fr.skyforce77.arch3ds.api.GameManager;
 import fr.skyforce77.arch3ds.api.graphics.ArchGraphics;
 import fr.skyforce77.arch3ds.api.graphics.ArchScreen;
 import fr.skyforce77.arch3ds.api.input.ArchInput;
 import fr.skyforce77.arch3ds.api.listener.GraphicsListener;
 import fr.skyforce77.arch3ds.api.listener.InputListener;
+import fr.skyforce77.arch3ds.api.server.ServerManager;
 
 public class Game2048 extends ArchGame implements InputListener,GraphicsListener{
 
@@ -127,7 +127,7 @@ public class Game2048 extends ArchGame implements InputListener,GraphicsListener
 			reverse(false);
 		}
 		if(full()) {
-			GameManager.callGameMethod("displayPopup", "Game Over");
+			ServerManager.callMethod("DISPLAY_POPUP", "Game Over");
 			table = new int[4][4];
 		}
 	}

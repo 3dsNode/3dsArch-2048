@@ -1,3 +1,4 @@
 name: 2048
 main: fr.skyforce77.arch3ds.game2048.Game2048
 version: 0.1
+arch: 3.0

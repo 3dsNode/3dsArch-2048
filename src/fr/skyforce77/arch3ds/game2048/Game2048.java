@@ -9,7 +9,7 @@ import javax.swing.ImageIcon;
 
 import fr.skyforce77.arch3ds.api.ArchGame;
 import fr.skyforce77.arch3ds.api.graphics.ArchGraphics;
-import fr.skyforce77.arch3ds.api.graphics.ArchScreen;
+import fr.skyforce77.arch3ds.api.graphics.ArchScreenType;
 import fr.skyforce77.arch3ds.api.input.ArchInput;
 import fr.skyforce77.arch3ds.api.listener.GraphicsListener;
 import fr.skyforce77.arch3ds.api.listener.InputListener;
@@ -63,7 +63,7 @@ public class Game2048 extends ArchGame implements InputListener,GraphicsListener
 			move(input);
 			createCase();
 
-			ArchGraphics.push(ArchScreen.BOTTOM_SCREEN);
+			ArchGraphics.push(ArchScreenType.BOTTOM_SCREEN);
 		}
 	}
 
@@ -73,7 +73,7 @@ public class Game2048 extends ArchGame implements InputListener,GraphicsListener
 		g2d.setColor(background);
 		g2d.fillRect(0, 0, graphics.getWidth(), graphics.getHeight());
 
-		if(graphics.getScreen().equals(ArchScreen.BOTTOM_SCREEN)) {
+		if(graphics.getScreen().getType().equals(ArchScreenType.BOTTOM_SCREEN)) {
 			int width = graphics.getWidth()/5;
 			int height = graphics.getHeight()/5;
 			for(int i = 0; i < 4; i++) {
@@ -82,7 +82,7 @@ public class Game2048 extends ArchGame implements InputListener,GraphicsListener
 					g2d.fillRoundRect(i*width+(i+1)*width/5, j*height+(j+1)*height/5, width, height, 20, 20);
 				}
 			}
-		} else if(graphics.getScreen().equals(ArchScreen.TOP_SCREEN)) {
+		} else if(graphics.getScreen().getType().equals(ArchScreenType.TOP_SCREEN)) {
 			Image im = new ImageIcon(Game2048.class.getResource("/resources/2048.png")).getImage();
 			g2d.drawImage(im, 0, 0, graphics.getWidth(), graphics.getHeight(), null);
 		}
